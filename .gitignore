@@ -1,0 +1,5 @@
+.env
+/miniblog/__pycache__/
+/blog/__pycache__/
+/blog/migrations/
+db.sqlite3

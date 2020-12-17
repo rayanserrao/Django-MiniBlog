@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="col-sm-10">
+    <h3 class="text-dark my-5">Signup Page</h3>
+   <center><form class="container ml-5" action="" method="POST" novalidate>
+        {% csrf_token %}
+        {% for fm in form %}
+        <div class="form-group col-md-6 ">
+
+            {{fm.label_tag}}
+       {{fm}}
+       <small class="text-warning">
+        {{fm.errors|striptags}}</small>
+
+        </div>
+        
+        {% endfor %}
+
+        <input type="submit" class="btn btn-primary" value="SIGNUP" name="" id="">
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <p class="alert alert-danger mt-3">{{error}}</p>
+        {% endfor %}
+        {% endif %}
+
+       
+
+    </form>
+</center> 
+    
+    
+</div>
+{% endblock content %}
