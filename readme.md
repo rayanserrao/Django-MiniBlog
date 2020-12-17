@@ -1,4 +1,4 @@
-# **Django Mini Blog **
+ **Django Mini Blog **
 
 *A Mini Blog using Django and Boostrap*
 
