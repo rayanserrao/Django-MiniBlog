@@ -11,6 +11,15 @@ def home(request):
     posts = Post.objects.all()  # to get all the post in home page
     return render(request,'home.html',{'posts':posts})
 
+def bloghome(request):
+    posts = Post.objects.all()
+    return render(request,'bloghome.html',{'posts':posts})
+
+def blogs(request,blogid):
+    posts= Post.objects.get(id=blogid)
+    return render(request,'blogs.html',{'posts':posts})
+
+
 def about(request):
     return render(request,'about.html')
 
