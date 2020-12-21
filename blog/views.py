@@ -43,7 +43,7 @@ def dashboard(request):
 def user_Logout(request):
     logout(request)
     messages.success(request,'loged out successfully')
-    return HttpResponseRedirect('/login/')
+    return HttpResponseRedirect('/')
     
 
 def user_signup(request):

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
+
 Blog home
 {% endblock title %}
 {% block Blogactive %} {% endblock Blogactive %}
@@ -9,15 +11,25 @@ Blog home
 <div class="row no-gutters border rounded overflow-hidden flex-md-row mt-4  shadow-sm h-md-250 position-relative">
 
 
-<div class="col p-4 d-flex flex-column position-static">
-    <strong class="d-inline-block mb-2 text-primary"> Posted by {{post.author}}</strong>
-    <h3 class="mb-0">{{post.title}}</h3>
-    <!-- <div class="mb-1 text-muted"></div> -->
-    <p class="card-text mb-auto">{{post.desc | truncatechars:100}}</p>
-    <div class="my-2">
-        <a href="/blogs/{{post.id}}" role="button" class="btn btn-primary">Continue reading</a>
+    <div class="col p-4 d-flex flex-column position-static">
+        <strong class="d-inline-block mb-2 text-primary"> Posted by {{post.author}}</strong>
+        <h3 class="mb-0">{{post.title}}</h3>
+        <!-- <div class="mb-1 text-muted"></div> -->
+        <p class="card-text mb-auto">{{post.desc | truncatechars:100}}</p>
+
+        {% if request.user.is_authenticated %}
+        <div class="my-2">
+           
+
+            <a href="/blogs/{{post.id}}" role="button" class="btn btn-primary">Continue reading</a>
+        </div>
+        {% else %}
+        <div class="my-2">
+            <a href="/signup/" role="button" class="btn btn-secondary">Continue reading</a>
+        </div>
+        {% endif %}
+
     </div>
-</div>
 </div>
 {% endfor %}
 {% endblock content %}
