@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponseRedirect
+from django.shortcuts import render,HttpResponseRedirect,HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from blog.forms import SignupForm,LoginForm,PostForm
 from django.contrib import messages
@@ -83,6 +83,21 @@ def user_login(request):
 
     else:
         return HttpResponseRedirect('/dashboard/')
+
+def search(request):
+    query = request.GET['query']
+    if len(query)>40:
+        posts = Post.objects.none()
+    else:
+
+        poststitle = Post.objects.filter(title__icontains=query)
+        postdesc = Post.objects.filter(desc__icontains=query)
+        posts=poststitle.union(postdesc)
+
+    if posts.count() == 0:
+       messages.warning(request,"Please search for correct keyword")
+
+    return render(request,'search.html',{'posts':posts,'query':query})
 
 #CRUD operations
 #add new post
