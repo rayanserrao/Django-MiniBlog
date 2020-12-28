@@ -1,9 +1,9 @@
-from django.shortcuts import render,HttpResponseRedirect,HttpResponse
+from django.shortcuts import render,HttpResponseRedirect,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm
 from blog.forms import SignupForm,LoginForm,PostForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
-from blog.models import Post
+from blog.models import Post,BlogComment
 from django.contrib.auth.models import Group
 
 # Create your views here.
@@ -17,7 +17,23 @@ def bloghome(request):
 
 def blogs(request,blogid):
     posts= Post.objects.get(id=blogid)
-    return render(request,'blogs.html',{'posts':posts})
+    comment = BlogComment.objects.filter(post=posts)
+    return render(request,'blogs.html',{'posts':posts,'comment':comment})
+
+#comments
+def postcomment(request):
+    if request.method == 'POST':
+        comment = request.POST.get('comment') 
+        user = request.user
+        postid  = request.POST.get('postid')
+        post = Post.objects.get(id=postid)
+        # parent
+
+        comment = BlogComment(comment=comment,user=user,post=post)
+        comment.save()
+        messages.success(request,"comment added succesfully")
+    
+    return redirect(f'/blogs/{post.id}')
 
 
 def about(request):
