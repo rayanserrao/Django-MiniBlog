@@ -18,6 +18,9 @@ def bloghome(request):
 
 def blogs(request,blogid):
     posts= Post.objects.get(id=blogid)
+
+    posts.views = posts.views + 1
+    posts.save()
     comments = BlogComment.objects.filter(post=posts,parent=None)
     replies = BlogComment.objects.filter(post=posts).exclude(parent=None)
     replydict = {}
@@ -27,7 +30,7 @@ def blogs(request,blogid):
         else:
             replydict[reply.parent.sno].append(reply)
 
-    print(replydict)
+    
     return render(request,'blogs.html',{'posts':posts,'comments':comments,'replydict':replydict})
 
 #comments

@@ -12,8 +12,9 @@ Blog home
 
 
     <div class="col p-4 d-flex flex-column position-static">
-        <strong class="d-inline-block mb-2 text-primary"> Posted by {{post.author}}</strong>
-        <h3 class="mb-0">{{post.title}}</h3>
+        <strong class="d-inline-block mb-2 text-dark"> Posted by {{post.author}} {{post.views}}views</strong>
+        <h3 class="mb-0">{{post.title}} </h3>
+        
         <!-- <div class="mb-1 text-muted"></div> -->
         <p class="card-text mb-auto">{{post.desc | truncatechars:100}}</p>
 
