@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
+    # to show what time ago comments were posted
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

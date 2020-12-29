@@ -17,8 +17,9 @@ def bloghome(request):
 
 def blogs(request,blogid):
     posts= Post.objects.get(id=blogid)
-    comment = BlogComment.objects.filter(post=posts)
-    return render(request,'blogs.html',{'posts':posts,'comment':comment})
+    comments = BlogComment.objects.filter(post=posts,parent=None)
+    replies = BlogComment.objects.filter(post=posts).exclude(parent=None)
+    return render(request,'blogs.html',{'posts':posts,'comments':comments})
 
 #comments
 def postcomment(request):
@@ -27,11 +28,25 @@ def postcomment(request):
         user = request.user
         postid  = request.POST.get('postid')
         post = Post.objects.get(id=postid)
+        parentsno  = request.POST.get('parentsno')
+        if parentsno =="":    # if parent sno is blank then it is commnet
+
+            comment = BlogComment(comment=comment,user=user,post=post)
+            
+            comment.save()
+            messages.success(request,"Comment added succesfully")
+
+        else:  # if parentsno is not blank then it is reply
+            parent = BlogComment.objects.get(sno=parentsno)
+            comment = BlogComment(comment=comment,user=user,post=post,parent=parent)
+
+
+        
         # parent
 
-        comment = BlogComment(comment=comment,user=user,post=post)
-        comment.save()
-        messages.success(request,"comment added succesfully")
+        
+            comment.save()
+            messages.success(request,"Reply added succesfully")
     
     return redirect(f'/blogs/{post.id}')
 

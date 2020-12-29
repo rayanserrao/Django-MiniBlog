@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
 {% block title %}
 Blog home
 {% endblock title %}
@@ -9,28 +11,85 @@ Blog home
 <div class="row no-gutters border rounded overflow-hidden flex-md-row mt-4  shadow-sm h-md-250 position-relative">
 
 
-<div class="col p-4 d-flex flex-column position-static">
-    <strong class="d-inline-block mb-2 text-primary"> Posted by {{posts.author}}</strong>
-    <h3 class="mb-0">{{posts.title}}</h3>
-    <!-- <div class="mb-1 text-muted"></div> -->
-    <p class="card-text mb-auto">{{posts.desc}}</p>
-    
-</div>
-</div>
-<div class="container mt-3">
-    <h2>Comments</h2>
-    <form action="/postcomment/" method="POST">
-        {% csrf_token %}
-    <input type="text" name="comment" placeholder="enter commnet here" id="">
-    <input type="hidden" name="postid" value="{{posts.id}}">
-    <input type="submit" value="SUBMIT" name="" id="">
+    <div class="col p-4 d-flex flex-column position-static">
+        <strong class="d-inline-block mb-2 text-primary "> Posted by {{posts.author}}</strong>
+        <h3 class="mb-0">{{posts.title}}</h3>
+        <!-- <div class="mb-1 text-muted"></div> -->
+        <p class="card-text mb-auto">{{posts.desc}}</p>
 
-
-</form>
-    <div class="row my-3">
-        <div class="col-md-2 bg-success ">Image</div>
-        <div class="col-md-10 bg-primary"><b>Rayan Says</b> its a good post</div>
     </div>
 </div>
+<div class="container mt-3">
+    <h2>Comments({{comments.count}})</h2>
+    <form action="/postcomment/" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="commentname">Post Comment</label>
+            <input type="text" class="form-control" name="comment" placeholder="enter commnet here" required id="">
+        </div>
+        <input type="hidden" name="postid" value="{{posts.id}}">
+        <input type="hidden" name="parentsno" value="">
+        <input type="submit" class="btn btn-dark" value="SUBMIT" name="" id="">
+
+
+
+
+    </form>
+    {% for comment in comments %}
+    <div class="row my-3">
+        <div class="col-md-1  ">
+            <img class="rounded mx-auto d-block w-100 p-2 border border-dark rounded-pill"
+                src="{% static 'images/user.png' %}" alt="user">
+        </div>
+        <div class="col-md-11"><b>{{comment.user.username}} </b>
+            <small class="text-muted text-dark badge badge-light  "> {{comment.time_posted | naturaltime}}</small>
+            <div>{{comment.comment}}
+
+            </div>
+
+
+            <div class="reply mx-0">
+                
+                <a  data-toggle="collapse" href="#replybox{{comment.sno}}" role="button"
+                    aria-expanded="false" aria-controls="replybox{{comment.sno}}">
+                    Reply
+                </a>
+
+
+                <div class="collapse" id="replybox{{comment.sno}}">
+                    <div class="card card-body my-2">
+
+                        <form action="/postcomment/" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="commentname">Post Reply</label>
+                                <input type="text" class="form-control" name="comment" placeholder="enter commnet here" required id="">
+                                <input type="hidden" name="parentsno" value="{{comment.sno}}">
+                            </div>
+                            <input type="hidden" name="postid" value="{{posts.id}}">
+                            <input type="submit" class="btn btn-dark" value="SUBMIT" name="" id="">
+                    
+                    
+                    
+                    
+                        </form>
+                        
+                    </div>
+                </div>
+
+                <div class="replies bg-danger mt-2">
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
 
 {% endblock content %}
