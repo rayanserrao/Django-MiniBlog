@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from blog.models import Post,BlogComment
 from django.contrib.auth.models import Group
+from blog.templatetags import extras
 
 # Create your views here.
 def home(request):
@@ -19,7 +20,15 @@ def blogs(request,blogid):
     posts= Post.objects.get(id=blogid)
     comments = BlogComment.objects.filter(post=posts,parent=None)
     replies = BlogComment.objects.filter(post=posts).exclude(parent=None)
-    return render(request,'blogs.html',{'posts':posts,'comments':comments})
+    replydict = {}
+    for reply in replies:
+        if reply.parent.sno not in replydict.keys():
+            replydict[reply.parent.sno] = [reply]
+        else:
+            replydict[reply.parent.sno].append(reply)
+
+    print(replydict)
+    return render(request,'blogs.html',{'posts':posts,'comments':comments,'replydict':replydict})
 
 #comments
 def postcomment(request):

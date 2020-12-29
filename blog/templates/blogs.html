@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load humanize %}
+{% load extras %}
 {% block title %}
 Blog home
 {% endblock title %}
@@ -77,10 +78,27 @@ Blog home
                     </div>
                 </div>
 
-                <div class="replies bg-danger mt-2">
+                <div class="replies  mt-2">
+                    {% for reply in replydict|get_val:comment.sno %}
+                    <div class="row">
+                        <div class="col-md-1">
+                            <img class="rounded mx-auto d-block w-75 p-2 border border-dark rounded-pill"
+                src="{% static 'images/user.png' %}" alt="user">
+                        </div>
+                        <div class="col-md-11">
+                            <b>{{reply.user}} </b>
+                            <small class="text-muted text-dark badge badge-light  "> {{reply.time_posted | naturaltime}}</small>
+                            <div>
+                            {{reply.comment}}
+                        </div>
+                           
+
+                        </div>
+                    </div>
+                     
                     <br>
-                    <br>
-                    <br>
+                    {% endfor %}
+
                 </div>
             </div>
 
