@@ -23,6 +23,8 @@
 
 **It conatains the dashboard page where logedin person can see the post and his profile. the home page contains all the posts that has been created.**
 
+**Created seacrh option where user can search anything he wants to find. Added comments and replies to a post and also the total number of views of the post.**
+
 
 
 
