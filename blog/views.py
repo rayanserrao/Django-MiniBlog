@@ -19,8 +19,10 @@ def bloghome(request):
 def blogs(request,blogid):
     posts= Post.objects.get(id=blogid)
 
+    #views
     posts.views = posts.views + 1
     posts.save()
+
     comments = BlogComment.objects.filter(post=posts,parent=None)
     replies = BlogComment.objects.filter(post=posts).exclude(parent=None)
     replydict = {}

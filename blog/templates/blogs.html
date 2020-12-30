@@ -43,7 +43,7 @@ Blog home
             <img class="rounded mx-auto d-block w-100 p-2 border border-dark rounded-pill"
                 src="{% static 'images/user.png' %}" alt="user">
         </div>
-        <div class="col-md-11"><b>{{comment.user.username}} </b>
+        <div class="col-md-11"><b>{{comment.user}} </b>
             <small class="text-muted text-dark badge badge-light  "> {{comment.time_posted | naturaltime}}</small>
             <div>{{comment.comment}}
 
