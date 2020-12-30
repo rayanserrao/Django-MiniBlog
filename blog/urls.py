@@ -18,7 +18,8 @@ urlpatterns = [
 
 
     # Creating APi for postimg comments
-    path('postcomment/',postcomment,name='postcomment')
+    path('postcomment/',postcomment,name='postcomment'),
+    path('changepass/',changpass,name= 'changpass')
     
 
     

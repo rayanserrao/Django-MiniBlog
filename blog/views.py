@@ -2,10 +2,11 @@ from django.shortcuts import render,HttpResponseRedirect,HttpResponse,redirect
 from django.contrib.auth.forms import UserCreationForm
 from blog.forms import SignupForm,LoginForm,PostForm
 from django.contrib import messages
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 from blog.models import Post,BlogComment
 from django.contrib.auth.models import Group
 from blog.templatetags import extras
+from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
 
 # Create your views here.
 def home(request):
@@ -200,4 +201,23 @@ def deletepost(request,delid):
         
     else:
         return HttpResponseRedirect('/login/')
+
+
+
+# changing password with old password
+
+def changpass(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = PasswordChangeForm(user = request.user, data = request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request,form.user)
+                messages.info(request,"password changed succesfully")
+                return redirect('/')
+        else:
+            form = PasswordChangeForm(user = request.user)
+        return render(request,'changepass.html',{'form':form})
+    else:
+        return redirect('/login/')
 
